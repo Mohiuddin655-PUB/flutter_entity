@@ -45,11 +45,10 @@ class Entity<Key extends EntityKey> {
 
   /// Returns the entity as a map.
   Map<String, dynamic> get source {
-    return {
-      key.id: id,
-      key.timeMills: timeMills,
-    };
+    return <String, dynamic>{}.set(key.id, id).set(key.timeMills, timeMills);
   }
+
+  bool isInsertable(String key, value) => key.isNotEmpty;
 
   /// Constructs the key for the entity.
   Key makeKey() {

@@ -12,20 +12,26 @@ extension EntityObjectHelper on Object? {
   int? get entityTimeMills => isEntity ? Entity.autoTimeMills(this) : null;
 
   /// Retrieves an object associated with the given key from the entity.
-  T? entityObject<T>(String key,
-      EntityBuilder<T> builder,) {
+  T? entityObject<T>(
+    String key,
+    EntityBuilder<T> builder,
+  ) {
     return isEntity ? Entity.object(key, this, builder) : null;
   }
 
   /// Retrieves a list of objects associated with the given key from the entity.
-  List<T>? entityObjects<T>(String key,
-      EntityBuilder<T> builder,) {
+  List<T>? entityObjects<T>(
+    String key,
+    EntityBuilder<T> builder,
+  ) {
     return isEntity ? Entity.objects(key, this, builder) : null;
   }
 
   /// Retrieves an object of a specific type associated with the given key from the entity.
-  T? entityType<T>(String key,
-      EntityBuilder<T> builder,) {
+  T? entityType<T>(
+    String key,
+    EntityBuilder<T> builder,
+  ) {
     return isEntity ? Entity.type(key, this, builder) : null;
   }
 
@@ -41,5 +47,28 @@ extension EntityObjectHelper on Object? {
   /// If the object is not an entity or if the key doesn't exist, returns null.
   List<T>? entityValues<T>(String key) {
     return isEntity ? Entity.values(key, this) : null;
+  }
+}
+
+extension EntityMapHelper on Map<String, dynamic> {
+  bool isInsertable(String key, value) {
+    return key.isNotEmpty && value != null;
+  }
+
+  Map<String, dynamic> set(String key, value, [bool nullable = false]) {
+    if (nullable || isInsertable(key, value)) {
+      return this..putIfAbsent(key, () => value);
+    } else {
+      return this;
+    }
+  }
+
+  T? find<T>(String key) {
+    final i = this[key];
+    if (i is T) {
+      return i;
+    } else {
+      return null;
+    }
   }
 }

@@ -69,7 +69,7 @@ class Entity<Key extends EntityKey> {
 
   /// Returns the value associated with the given key from the source.
   static dynamic _v(String key, dynamic source) {
-    if (source is Map<String, dynamic>) {
+    if (source is Map) {
       return source[key];
     } else {
       return null;

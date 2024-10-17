@@ -1,6 +1,8 @@
 part of 'response.dart';
 
 class ResponseMessages {
+  const ResponseMessages._();
+
   static const String alreadyFound = "Data already existed!";
   static const String internetDisconnected =
       "Your internet service has disconnected. Please confirm your internet connection.";

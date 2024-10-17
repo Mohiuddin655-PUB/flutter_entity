@@ -1,6 +1,8 @@
 part 'extensions.dart';
 part 'key.dart';
-part 'typedefs.dart';
+
+/// Defines a function signature for building entities from dynamic data.
+typedef EntityBuilder<T> = T Function(dynamic value);
 
 /// Represents an entity with a unique identifier and timestamp.
 class Entity<Key extends EntityKey> {
@@ -27,17 +29,6 @@ class Entity<Key extends EntityKey> {
   })  : _id = id ?? generateID,
         _timeMills = timeMills ?? generateTimeMills;
 
-  /// Constructs an [Entity] object from a dynamic source.
-  factory Entity.from(dynamic source) {
-    return Entity(
-      id: Entity.autoId(source),
-      timeMills: Entity.autoTimeMills(source),
-    );
-  }
-
-  /// Constructs an [Entity] object from a dynamic source.
-  factory Entity.root(dynamic source) => Entity.from(source);
-
   Key? _key;
 
   /// The key associated with the entity.
@@ -45,10 +36,10 @@ class Entity<Key extends EntityKey> {
 
   /// Returns the entity as a map.
   Map<String, dynamic> get source {
-    return <String, dynamic>{}.set(key.id, id).set(key.timeMills, timeMills);
+    return <String, dynamic>{}.put(key.id, id).put(key.timeMills, timeMills);
   }
 
-  bool isInsertable(String key, value) => key.isNotEmpty;
+  bool isInsertable(String key, dynamic value) => key.isNotEmpty;
 
   /// Constructs the key for the entity.
   Key makeKey() {
@@ -68,102 +59,66 @@ class Entity<Key extends EntityKey> {
   static int get generateTimeMills => DateTime.now().millisecondsSinceEpoch;
 
   /// Returns the value associated with the given key from the source.
-  static dynamic _v(String key, dynamic source) {
-    if (source is Map) {
-      return source[key];
-    } else {
-      return null;
+  static T? _v<T>(
+    dynamic source, [
+    EntityBuilder<T>? builder,
+  ]) {
+    if (source == null) return null;
+    if (source is T) return source;
+    if (source is num) {
+      if (T == int) return source.toInt() as T;
+      if (T == double) return source.toDouble() as T;
+      if (T == String) return source.toString() as T;
     }
+    if (source is String) {
+      if (T == num || T == int || T == double) {
+        final number = num.tryParse(source);
+        if (number != null) {
+          if (T == int) return number.toInt() as T;
+          if (T == double) return number.toDouble() as T;
+          return number as T;
+        }
+      }
+      if (T == bool) {
+        final boolean = bool.tryParse(source);
+        if (boolean != null) return boolean as T;
+      }
+    }
+    if (builder != null) {
+      return builder(source);
+    }
+    return null;
   }
 
-  /// Extracts and returns the auto-generated ID from the source.
-  static String? autoId(dynamic source, [String? key]) {
-    final data = _v(key ?? EntityKey.i.id, source);
-    if (data is int || data is String) {
-      return "$data";
-    } else {
-      return null;
-    }
+  /// Returns a iterable of values associated, cast to the specified type.
+  static Iterable<T>? _vs<T>(
+    dynamic source, [
+    EntityBuilder<T>? builder,
+  ]) {
+    if (source == null || source is! Iterable) return null;
+    return source.map((e) => _v(e, builder)).whereType<T>();
   }
 
-  /// Extracts and returns the auto-generated timestamp from the source.
-  static int? autoTimeMills(dynamic source, [String? key]) {
-    final data = _v(key ?? EntityKey.i.timeMills, source);
-    if (data is int) {
-      return data;
-    } else if (data is String) {
-      return int.tryParse(data);
-    } else {
-      return null;
-    }
-  }
-
-  /// Returns the value associated with the given key from the source, cast to the specified type.
-  static T? value<T>(String key, dynamic source) {
-    final data = _v(key, source);
-    if (data is T) {
-      return data;
-    } else {
-      return null;
-    }
+  /// Returns the value associated with the given key from the source.
+  static T? value<T>(
+    String key,
+    dynamic source, [
+    EntityBuilder<T>? builder,
+  ]) {
+    final value = source is Map ? source[key] : null;
+    return _v(value, builder);
   }
 
   /// Returns a list of values associated with the given key from the source, cast to the specified type.
-  static List<T>? values<T>(String key, dynamic source) {
-    final data = _v(key, source);
-    if (data is List) {
-      final list = <T>[];
-      for (var item in data) {
-        if (item is T) {
-          list.add(item);
-        }
-      }
-      return list;
-    } else {
-      return null;
-    }
-  }
-
-  /// Returns an object associated with the given key from the source, constructed using the provided builder.
-  static T? type<T>(
+  static List<T>? values<T>(
     String key,
-    dynamic source,
-    EntityBuilder<T> builder,
-  ) {
-    final data = _v(key, source);
-    if (data is String) {
-      return builder.call(data);
-    } else {
-      return null;
-    }
-  }
-
-  /// Returns an object associated with the given key from the source, constructed using the provided builder.
-  static T? object<T>(
-    String key,
-    dynamic source,
-    EntityBuilder<T> builder,
-  ) {
-    final data = _v(key, source);
-    if (data is Map) {
-      return builder.call(data);
-    } else {
-      return null;
-    }
-  }
-
-  /// Returns a list of objects associated with the given key from the source, constructed using the provided builder.
-  static List<T>? objects<T>(
-    String key,
-    dynamic source,
-    EntityBuilder<T> builder,
-  ) {
-    final data = _v(key, source);
-    if (data is List<Map<String, dynamic>>) {
-      return data.map((e) => builder.call(e)).toList();
-    } else {
-      return null;
-    }
+    dynamic source, [
+    EntityBuilder<T>? builder,
+  ]) {
+    final data = source is Map ? source[key] : null;
+    final iterable = _vs(data, builder);
+    if (iterable == null) return null;
+    return List.from(iterable);
   }
 
   /// Returns a string representation of the source map.

@@ -1,3 +1,8 @@
+## 1.0.7
+
+* Auto filter mode supported
+* Ignored key detection supported
+
 ## 1.0.6
 
 * Entity extension and model update

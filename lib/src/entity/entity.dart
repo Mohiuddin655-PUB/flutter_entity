@@ -34,12 +34,21 @@ class Entity<Key extends EntityKey> {
   /// The key associated with the entity.
   Key get key => _key ??= makeKey();
 
+  Iterable<String> get ignoredKeys => source.entries
+      .where((e) => !isInsertable(e.key, e.value))
+      .map((e) => e.key);
+
   /// Returns the entity as a map.
   Map<String, dynamic> get source {
     return {
-      if (idOrNull != null && idOrNull!.isNotEmpty) key.id: idOrNull,
-      if (timeMillsOrNull != null) key.timeMills: timeMillsOrNull,
+      key.id: idOrNull,
+      key.timeMills: timeMillsOrNull,
     };
+  }
+
+  Map<String, dynamic> get filtered {
+    final entries = source.entries.where((e) => isInsertable(e.key, e.value));
+    return Map.fromEntries(entries);
   }
 
   bool isInsertable(String key, dynamic value) {

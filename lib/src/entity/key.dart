@@ -14,6 +14,8 @@ class EntityKey {
     this.timeMills = "time_mills",
   });
 
+  Iterable<String> get keys => [id, timeMills];
+
   /// Singleton instance of [EntityKey].
   ///
   /// It provides access to commonly used entity keys.

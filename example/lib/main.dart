@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_entity/flutter_entity.dart';
 
@@ -36,10 +37,10 @@ class _HomePageState extends State<HomePage> {
       User user = User(id: userId, name: 'John Doe', age: 30);
 
       // Simulate a successful response with the fetched user entity
-      return response.withData(user, message: 'User fetched successfully');
+      return response.copy(data: user, message: 'User fetched successfully');
     } catch (e) {
       // If an error occurs during user retrieval, return an error response
-      return response.withException('Failed to fetch user');
+      return response.copy(exception: 'Failed to fetch user');
     }
   }
 
@@ -50,10 +51,10 @@ class _HomePageState extends State<HomePage> {
       User user = User(name: name, age: age);
 
       // Simulate a successful response with the created user entity
-      return response.withData(user, message: 'User created successfully');
+      return response.copy(data: user, message: 'User created successfully');
     } catch (e) {
       // If an error occurs during user creation, return an error response
-      return response.withException('Failed to create user');
+      return response.copy(exception: 'Failed to create user');
     }
   }
 
@@ -62,16 +63,22 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Creating a new user
     Response<User> createUserResponse = createUser('Alice', 25);
-    print(createUserResponse.message); // User created successfully
-    print(createUserResponse
-        .data); // User{id: 1634743202815, name: Alice, age: 25}
+    if (kDebugMode) {
+      print(createUserResponse.message);
+    } // User created successfully
+    if (kDebugMode) {
+      print(createUserResponse.data);
+    } // User{id: 1634743202815, name: Alice, age: 25}
 
     // Fetching an existing user
     String userId = createUserResponse.data?.id ?? '';
     Response<User> getUserResponse = getUser(userId);
-    print(getUserResponse.message); // User fetched successfully
-    print(getUserResponse
-        .data); // User{id: 1634743202815, name: John Doe, age: 30}
+    if (kDebugMode) {
+      print(getUserResponse.message);
+    } // User fetched successfully
+    if (kDebugMode) {
+      print(getUserResponse.data);
+    } // User{id: 1634743202815, name: John Doe, age: 30}
   }
 
   @override

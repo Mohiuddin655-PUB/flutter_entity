@@ -3,9 +3,13 @@ part of 'response.dart';
 extension ResponseStatusExtension on Status? {
   Status get use => this ?? Status.none;
 
+  bool get isAvailable => use == Status.available;
+
   bool get isAlreadyFound => use == Status.alreadyFound;
 
   bool get isCanceled => use == Status.canceled;
+
+  bool get isCompleted => use == Status.completed;
 
   bool get isError => use == Status.error;
 
@@ -57,24 +61,4 @@ extension ResponseStatusExtension on Status? {
   String get exception => isExceptionMode ? use._message : "";
 
   String get message => isMessageMode ? use._message : "";
-}
-
-extension _ListExtension<T> on List<T>? {
-  List<T> set(T? value) {
-    var current = this ?? [];
-    if (value != null) current.add(value);
-    return current;
-  }
-
-  List<T> setAt(int index, T? value) {
-    var current = this ?? [];
-    if (value != null) current.insert(index, value);
-    return current;
-  }
-
-  List<T> attach(List<T>? value) {
-    var current = this ?? [];
-    if (value != null) current.addAll(value);
-    return current;
-  }
 }

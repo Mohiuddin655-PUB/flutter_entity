@@ -3,10 +3,12 @@ part of 'response.dart';
 class ResponseMessages {
   const ResponseMessages._();
 
+  static const String available = "Data is available!";
   static const String alreadyFound = "Data already existed!";
   static const String internetDisconnected =
       "Your internet service has disconnected. Please confirm your internet connection.";
   static const String processCanceled = "Process has canceled!";
+  static const String processCompleted = "Process has completed!";
   static const String processFailed = "Process has failed, please try again!";
   static const String processPaused = "Process has paused!";
   static const String processStopped = "Process has stopped!";

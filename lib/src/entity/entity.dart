@@ -6,28 +6,28 @@ typedef EntityBuilder<T> = T Function(dynamic value);
 
 /// Represents an entity with a unique identifier and timestamp.
 class Entity<Key extends EntityKey> {
-  String? _id;
-  int? _timeMills;
+  String? idOrNull;
+  int? timeMillsOrNull;
 
-  /// The unique identifier of the entity.
-  String get id => _id ?? generateID;
+  String get id => idOrNull ?? '';
+
+  int get timeMills => timeMillsOrNull ?? 0;
 
   /// The unique identifier of the entity as an integer.
   int get idInt => int.tryParse(id) ?? 0;
 
-  /// The timestamp associated with the entity.
-  int get timeMills => _timeMills ?? generateTimeMills;
-
-  set id(String value) => _id = value;
-
-  set timeMills(int value) => _timeMills = value;
-
-  /// Constructs an [Entity] object with optional id and timeMills.
   Entity({
     String? id,
     int? timeMills,
-  })  : _id = id ?? generateID,
-        _timeMills = timeMills ?? generateTimeMills;
+  })  : idOrNull = id,
+        timeMillsOrNull = timeMills;
+
+  /// Constructs an [Entity] object with optional id and timeMills.
+  Entity.generate({
+    String? id,
+    int? timeMills,
+  })  : idOrNull = id ?? generateID,
+        timeMillsOrNull = timeMills ?? generateTimeMills;
 
   Key? _key;
 
@@ -36,10 +36,15 @@ class Entity<Key extends EntityKey> {
 
   /// Returns the entity as a map.
   Map<String, dynamic> get source {
-    return <String, dynamic>{}.put(key.id, id).put(key.timeMills, timeMills);
+    return {
+      if (idOrNull != null && idOrNull!.isNotEmpty) key.id: idOrNull,
+      if (timeMillsOrNull != null) key.timeMills: timeMillsOrNull,
+    };
   }
 
-  bool isInsertable(String key, dynamic value) => key.isNotEmpty;
+  bool isInsertable(String key, dynamic value) {
+    return this.key.keys.contains(key) && value != null;
+  }
 
   /// Constructs the key for the entity.
   Key makeKey() {

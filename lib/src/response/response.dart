@@ -11,7 +11,7 @@ class Response<T extends Object> {
   List<T>? _ignores;
   double? _progress;
   Status? _status;
-  String? _exception;
+  String? _error;
   String? _message;
   dynamic feedback;
   dynamic snapshot;
@@ -24,9 +24,10 @@ class Response<T extends Object> {
 
   bool get isComplete => status == Status.completed;
 
-  bool get isError => status == Status.error;
-
-  bool get isException => _exception?.isNotEmpty ?? status.isExceptionMode;
+  bool get isError {
+    return status == Status.error ||
+        (_error?.isNotEmpty ?? status.isExceptionMode);
+  }
 
   bool get isFailed => status == Status.failure;
 
@@ -64,7 +65,7 @@ class Response<T extends Object> {
 
   Status get status => _status ?? Status.none;
 
-  String get exception => _exception ?? status.exception;
+  String get error => _error ?? status.error;
 
   String get message => _message ?? status.message;
 
@@ -76,7 +77,7 @@ class Response<T extends Object> {
     List<T>? result,
     double? progress,
     Status? status,
-    String? exception,
+    String? error,
     String? message,
     this.feedback,
     this.snapshot,
@@ -85,14 +86,18 @@ class Response<T extends Object> {
         _ignores = ignores,
         _result = result,
         _progress = progress,
-        _status = status,
-        _exception = exception,
-        _message = message;
+        _error = error,
+        _message = message,
+        _status = status ??= (data != null || result != null)
+            ? Status.ok
+            : (error ?? '').isNotEmpty
+                ? Status.error
+                : null;
 
   Response<T> from(Response<T> response) {
     return copy(
       data: response._data,
-      exception: response._exception,
+      exception: response._error,
       feedback: response.feedback,
       message: response._message,
       progress: response._progress,
@@ -118,14 +123,9 @@ class Response<T extends Object> {
     dynamic feedback,
     dynamic snapshot,
   }) {
-    status ??= (data != null || result != null)
-        ? Status.ok
-        : (exception ?? '').isNotEmpty
-            ? Status.error
-            : null;
     return Response<T>(
       data: data ?? _data,
-      exception: exception ?? _exception,
+      error: exception ?? _error,
       feedback: feedback ?? this.feedback,
       message: message ?? _message,
       progress: progress ?? _progress,
@@ -150,14 +150,18 @@ class Response<T extends Object> {
     dynamic feedback,
     dynamic snapshot,
   }) {
-    status ??= ((data != null || result != null) ? Status.ok : null);
+    status ??= (data != null || result != null)
+        ? Status.ok
+        : (exception ?? '').isNotEmpty
+            ? Status.error
+            : null;
     _data = data ?? _data;
     _backups = backups ?? _backups;
     _ignores = ignores ?? _ignores;
     _result = result ?? _result;
     _progress = progress ?? _progress;
     _status = status ?? _status;
-    _exception = exception ?? _exception;
+    _error = exception ?? _error;
     _message = message ?? _message;
     this.feedback = feedback ?? this.feedback;
     this.snapshot = snapshot ?? this.snapshot;
@@ -170,7 +174,7 @@ class Response<T extends Object> {
     return "Response {\n"
         "\tBackups        : $backups\n"
         "\tData           : $data\n"
-        "\tException      : $exception\n"
+        "\tException      : $error\n"
         "\tFeedback       : $feedback\n"
         "\tIgnores        : $ignores\n"
         "\tMessage        : $message\n"
@@ -184,6 +188,6 @@ class Response<T extends Object> {
 
   @override
   String toString() {
-    return "Response (Request Code: $requestCode, Progress: $progress, Status: $status, Exception: $exception, Message: $message, Feedback: $feedback, Snapshot: $snapshot, Data: $data, Result: $result, Backups: $backups, Ignores: $ignores)";
+    return "Response (Request Code: $requestCode, Progress: $progress, Status: $status, Exception: $error, Message: $message, Feedback: $feedback, Snapshot: $snapshot, Data: $data, Result: $result, Backups: $backups, Ignores: $ignores)";
   }
 }

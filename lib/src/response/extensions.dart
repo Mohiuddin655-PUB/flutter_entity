@@ -58,7 +58,7 @@ extension ResponseStatusExtension on Status? {
     return isPaused || isLoading || isSuccessful;
   }
 
-  String get exception => isExceptionMode ? use._message : "";
+  String get error => isExceptionMode ? use._message : "";
 
   String get message => isMessageMode ? use._message : "";
 }

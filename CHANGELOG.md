@@ -1,3 +1,7 @@
+## 1.0.8
+
+* Response status auto detection enabled
+
 ## 1.0.7
 
 * Auto filter mode supported

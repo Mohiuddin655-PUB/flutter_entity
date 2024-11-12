@@ -19,15 +19,15 @@ class Entity<Key extends EntityKey> {
   Entity({
     String? id,
     int? timeMills,
-  })  : idOrNull = id,
-        timeMillsOrNull = timeMills;
-
-  /// Constructs an [Entity] object with optional id and timeMills.
-  Entity.generate({
-    String? id,
-    int? timeMills,
   })  : idOrNull = id ?? generateID,
         timeMillsOrNull = timeMills ?? generateTimeMills;
+
+  /// Constructs an [Entity] object with optional id and timeMills.
+  Entity.create({
+    String? id,
+    int? timeMills,
+  })  : idOrNull = id,
+        timeMillsOrNull = timeMills;
 
   Key? _key;
 

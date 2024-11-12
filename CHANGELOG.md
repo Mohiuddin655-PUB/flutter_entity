@@ -1,3 +1,7 @@
+## 1.0.9
+
+* Entity id and timeMills auto generate mode supported
+
 ## 1.0.8
 
 * Response status auto detection enabled

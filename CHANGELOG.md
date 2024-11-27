@@ -1,3 +1,8 @@
+## 1.1.0
+
+* Add json and filteredJson in Entity
+* Override toString() as readable text in Entity
+
 ## 1.0.9
 
 * Entity id and timeMills auto generate mode supported

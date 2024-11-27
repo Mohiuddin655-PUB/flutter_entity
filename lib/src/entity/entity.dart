@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 part 'extensions.dart';
 part 'key.dart';
 
@@ -50,6 +52,10 @@ class Entity<Key extends EntityKey> {
     final entries = source.entries.where((e) => isInsertable(e.key, e.value));
     return Map.fromEntries(entries);
   }
+
+  String get json => jsonEncode(source);
+
+  String get filteredJson => jsonEncode(filtered);
 
   bool isInsertable(String key, dynamic value) {
     return this.key.keys.contains(key) && value != null;
@@ -137,5 +143,5 @@ class Entity<Key extends EntityKey> {
 
   /// Returns a string representation of the source map.
   @override
-  String toString() => source.toString();
+  String toString() => "$Entity#$hashCode($json)";
 }

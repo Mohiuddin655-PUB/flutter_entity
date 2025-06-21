@@ -8,8 +8,9 @@ typedef EntityBuilder<T> = T Function(dynamic value);
 
 /// Represents an entity with a unique identifier and timestamp.
 class Entity<Key extends EntityKey> {
-  String? idOrNull;
-  int? timeMillsOrNull;
+  final String? idOrNull;
+  final int? timeMillsOrNull;
+  final Key? _key;
 
   String get id => idOrNull ?? '';
 
@@ -18,23 +19,25 @@ class Entity<Key extends EntityKey> {
   /// The unique identifier of the entity as an integer.
   int get idInt => int.tryParse(id) ?? 0;
 
-  Entity({
+  /// The key associated with the entity.
+  Key get key => _key ?? makeKey();
+
+  const Entity({
     String? id,
     int? timeMills,
-  })  : idOrNull = id ?? generateID,
-        timeMillsOrNull = timeMills ?? generateTimeMills;
+    Key? key,
+  })  : idOrNull = id,
+        timeMillsOrNull = timeMills,
+        _key = key;
 
   /// Constructs an [Entity] object with optional id and timeMills.
-  Entity.create({
+  Entity.auto({
     String? id,
     int? timeMills,
-  })  : idOrNull = id,
-        timeMillsOrNull = timeMills;
-
-  Key? _key;
-
-  /// The key associated with the entity.
-  Key get key => _key ??= makeKey();
+    Key? key,
+  })  : idOrNull = id ?? generateID,
+        timeMillsOrNull = timeMills ?? generateTimeMills,
+        _key = key;
 
   Iterable<String> get ignoredKeys => source.entries
       .where((e) => !isInsertable(e.key, e.value))

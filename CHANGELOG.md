@@ -1,3 +1,7 @@
+## 1.2.0
+
+* Improve Entity object with Key
+
 ## 1.1.0
 
 * Add json and filteredJson in Entity

@@ -54,16 +54,15 @@ class User extends Entity<EntityKey> {
 import 'response.dart';
 
 Response<User> createUser(String name, int age) {
-  final response = Response<User>();
   try {
     // Simulate creating a user entity with an auto-generated ID and timestamp
     User user = User(name: name, age: age);
 
     // Simulate a successful response with the created user entity
-    return response.withData(user, message: 'User created successfully');
+    return Response.ok(data: user, message: 'User created successfully');
   } catch (e) {
     // If an error occurs during user creation, return an error response
-    return response.withException('Failed to create user');
+    return Response.failure('Failed to create user');
   }
 }
 ```
@@ -71,17 +70,16 @@ Response<User> createUser(String name, int age) {
 ### Next, let's define a method to retrieve a user entity by ID and return a response:
 
 ```dart
-  Response<User> getUser(String userId) {
-  final response = Response<User>();
+Response<User> getUser(String userId) {
   try {
     // Simulate fetching user data from a database or external API
     User user = User(id: userId, name: 'John Doe', age: 30);
 
     // Simulate a successful response with the fetched user entity
-    return response.withData(user, message: 'User fetched successfully');
+    return Response.ok(data: user, message: 'User fetched successfully');
   } catch (e) {
     // If an error occurs during user retrieval, return an error response
-    return response.withException('Failed to fetch user');
+    return Response.failure('Failed to fetch user');
   }
 }
 ```

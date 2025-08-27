@@ -1,3 +1,7 @@
+## 1.2.2
+
+* Improve response status auto detection
+
 ## 1.2.0
 
 * Improve Entity object with Key

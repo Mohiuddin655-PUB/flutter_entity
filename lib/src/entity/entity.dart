@@ -22,6 +22,13 @@ class Entity<Key extends EntityKey> {
   /// The key associated with the entity.
   Key get key => _key ?? makeKey();
 
+  DateTime get dateTime => dateTimeOrNull ?? DateTime.now();
+
+  DateTime? get dateTimeOrNull {
+    if (timeMillsOrNull == null || timeMillsOrNull! <= 0) return null;
+    return DateTime.fromMillisecondsSinceEpoch(timeMillsOrNull!);
+  }
+
   const Entity({
     String? id,
     int? timeMills,

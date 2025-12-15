@@ -1,3 +1,7 @@
+## 1.2.3
+
+* Improve entity date time status
+
 ## 1.2.2
 
 * Improve response status auto detection

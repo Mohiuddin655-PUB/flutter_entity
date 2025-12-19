@@ -1,3 +1,8 @@
+## 1.2.4
+
+* Improve response
+* Add Equality util to check equals and generate hasCode
+
 ## 1.2.3
 
 * Improve entity date time status

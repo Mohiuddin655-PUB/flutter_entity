@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(50.0),
         child: Center(
-          child: Text(getUser("userId").beautify),
+          child: Text(getUser("userId").toString()),
         ),
       ),
     );

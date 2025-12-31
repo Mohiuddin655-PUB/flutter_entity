@@ -1,5 +1,3 @@
-part of 'entity.dart';
-
 /// Represents the keys associated with an entity.
 class EntityKey {
   /// The ID key.

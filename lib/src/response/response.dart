@@ -1,7 +1,7 @@
 import '../entity/equality.dart';
+import 'messages.dart';
 
 part 'extensions.dart';
-part 'messages.dart';
 part 'status.dart';
 
 /// A generic response wrapper class that encapsulates API responses with status,

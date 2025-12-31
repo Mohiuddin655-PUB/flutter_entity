@@ -1,3 +1,3 @@
-library entity;
+library;
 
 export 'flutter_entity.dart';

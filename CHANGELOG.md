@@ -1,3 +1,7 @@
+## 1.2.5
+
+* Improve entity
+
 ## 1.2.4
 
 * Improve response

@@ -1,5 +1,3 @@
-part of 'response.dart';
-
 class ResponseMessages {
   const ResponseMessages._();
 

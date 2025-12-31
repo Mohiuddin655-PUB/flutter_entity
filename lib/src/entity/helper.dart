@@ -1,5 +1,4 @@
 import 'entity.dart';
-import 'dart:io';
 
 /// Defines a function signature for building entities from dynamic data.
 typedef EntityBuilder<T> = T Function(dynamic value);

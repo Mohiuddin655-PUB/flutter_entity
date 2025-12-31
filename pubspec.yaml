@@ -1,6 +1,6 @@
 name: flutter_entity
 description: "Entity: Represents a structured data object. Response: Communicates operation outcomes with data and status indicators."
-version: 1.2.5
+version: 1.2.6
 repository: https://github.com/Mohiuddin655-PUB/flutter_entity.git
 
 environment:

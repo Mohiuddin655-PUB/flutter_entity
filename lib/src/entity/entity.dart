@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'equality.dart';
 import 'helper.dart';
 import 'key.dart';
+import 'modifier.dart';
 
 /// Represents an entity with a unique identifier and timestamp.
 ///
@@ -100,6 +101,11 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
   // ============================================================================
   // METHODS - Instance
   // ============================================================================
+
+  T? modify<T extends Object>(Modifier<T>? current, T? old) {
+    if (current == null) return old;
+    return current.modify(old: old);
+  }
 
   /// Checks if a field is insertable (valid key and non-null value)
   bool isInsertable(String key, dynamic value) {

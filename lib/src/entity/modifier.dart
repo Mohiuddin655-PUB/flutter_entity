@@ -1,12 +1,12 @@
 class Modifier<T extends Object> {
   final bool isUnset;
-  final T? current, old;
+  final T? value;
 
-  static const Modifier unset = Modifier._(null, null, true);
+  static const Modifier unset = Modifier._(null, true);
 
-  const Modifier._(this.current, this.old, this.isUnset);
+  const Modifier._(this.value, this.isUnset);
 
-  const Modifier(this.current, this.old) : isUnset = false;
+  const Modifier(this.value) : isUnset = false;
 
   T? modify({
     bool boolCheck = true,
@@ -14,11 +14,11 @@ class Modifier<T extends Object> {
     bool stringCheck = true,
     bool mapCheck = true,
     bool listCheck = true,
-    bool secondary = true,
+    T? old,
   }) {
     if (isUnset) return null;
 
-    if (old == null && current == null) return null;
+    if (old == null && value == null) return null;
 
     T? check(T? v) {
       if (v == null) return null;
@@ -30,8 +30,8 @@ class Modifier<T extends Object> {
       return v;
     }
 
-    if (!secondary) return check(current);
+    if (old == null) return check(old);
 
-    return check(current) ?? check(old);
+    return check(value) ?? check(old);
   }
 }

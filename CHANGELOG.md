@@ -1,3 +1,7 @@
+## 1.2.6
+
+* Update Modifier class and add modify method to Entity class; bump version to 1.2.6
+
 ## 1.2.5
 
 * Improve entity

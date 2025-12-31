@@ -1,3 +1,7 @@
+## 1.2.7
+
+* Refactor Modifier class to use isNull instead of isUnset; bump version to 1.2.7
+
 ## 1.2.6
 
 * Update Modifier class and add modify method to Entity class; bump version to 1.2.6

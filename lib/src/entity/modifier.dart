@@ -1,12 +1,12 @@
 class Modifier<T extends Object> {
-  final bool isUnset;
+  final bool isNull;
   final T? value;
 
-  static const Modifier unset = Modifier._(null, true);
+  const Modifier.nullable()
+      : value = null,
+        isNull = true;
 
-  const Modifier._(this.value, this.isUnset);
-
-  const Modifier(this.value) : isUnset = false;
+  const Modifier(this.value) : isNull = false;
 
   T? modify({
     bool boolCheck = true,
@@ -16,7 +16,7 @@ class Modifier<T extends Object> {
     bool listCheck = true,
     T? old,
   }) {
-    if (isUnset) return null;
+    if (isNull) return null;
 
     if (old == null && value == null) return null;
 

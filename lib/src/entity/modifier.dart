@@ -30,7 +30,7 @@ class Modifier<T extends Object> {
       return v;
     }
 
-    if (old == null) return check(old);
+    if (old == null) return check(value);
 
     return check(value) ?? check(old);
   }

@@ -1,7 +1,8 @@
 import 'entity.dart';
+import 'timestamp.dart';
 
 /// Defines a function signature for building entities from dynamic data.
-typedef EntityBuilder<T> = T Function(dynamic value);
+typedef EntityBuilder<T> = T? Function(dynamic value);
 
 class EntityHelper {
   const EntityHelper._();
@@ -64,6 +65,7 @@ class EntityHelper {
       if (T == int) return source.toInt() as T;
       if (T == double) return source.toDouble() as T;
       if (T == String) return source.toString() as T;
+      if (T == EntityTimestamp) return EntityTimestamp.parse(source) as T;
     }
 
     // Handle string conversions
@@ -82,6 +84,7 @@ class EntityHelper {
         final boolean = bool.tryParse(source);
         if (boolean != null) return boolean as T;
       }
+      if (T == EntityTimestamp) return EntityTimestamp.parse(source) as T;
     }
 
     // Use custom builder if provided

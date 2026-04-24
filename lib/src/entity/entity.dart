@@ -4,7 +4,6 @@ import 'equality.dart';
 import 'helper.dart';
 import 'key.dart';
 import 'modifier.dart';
-import 'timestamp.dart';
 
 /// Represents an entity with a unique identifier and timestamp.
 ///
@@ -20,7 +19,7 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
   // ============================================================================
 
   final String? idOrNull;
-  final EntityTimestamp? createdAtOrNull;
+  final int? timeMillsOrNull;
   final Key? _key;
 
   // ============================================================================
@@ -30,19 +29,19 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
   /// Creates an entity with optional id, timeMills, and key
   const Entity({
     String? id,
-    EntityTimestamp? createdAt,
+    int? timeMills,
     Key? key,
   })  : idOrNull = id,
-        createdAtOrNull = createdAt,
+        timeMillsOrNull = timeMills,
         _key = key;
 
   /// Creates an entity with auto-generated id and timeMills if not provided
   Entity.auto({
     String? id,
-    EntityTimestamp? createdAt,
+    int? timeMills,
     Key? key,
   })  : idOrNull = id ?? EntityHelper.generateID,
-        createdAtOrNull = createdAt ?? EntityTimestamp.now(),
+        timeMillsOrNull = timeMills ?? EntityHelper.generateTimeMills,
         _key = key;
 
   // ============================================================================
@@ -53,9 +52,7 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
   String get id => idOrNull ?? '';
 
   /// The timestamp in milliseconds since epoch
-  int get timeMills {
-    return createdAtOrNull?.dateTimeOrNull?.millisecondsSinceEpoch ?? 0;
-  }
+  int get timeMills => timeMillsOrNull ?? 0;
 
   /// The unique identifier of the entity as an integer
   int get idInt => int.tryParse(id) ?? 0;
@@ -67,7 +64,10 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
   DateTime get dateTime => dateTimeOrNull ?? DateTime.now();
 
   /// The timestamp as a DateTime object, or null if invalid
-  DateTime? get dateTimeOrNull => createdAtOrNull?.dateTimeOrNull;
+  DateTime? get dateTimeOrNull {
+    if (timeMillsOrNull == null || timeMillsOrNull! <= 0) return null;
+    return DateTime.fromMillisecondsSinceEpoch(timeMillsOrNull!);
+  }
 
   // ============================================================================
   // GETTERS - Data Representation
@@ -77,7 +77,7 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
   Map<String, dynamic> get source {
     return {
       key.id: idOrNull,
-      key.createdAt: createdAtOrNull,
+      key.timeMills: timeMillsOrNull,
     };
   }
 
@@ -125,7 +125,7 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
     }
   }
 
-  Iterable<Object?> get props => [idOrNull, createdAtOrNull];
+  Iterable<Object?> get props => [idOrNull, timeMillsOrNull];
 
   bool iterableEquals<T>(
     Iterable<T> a,
@@ -186,7 +186,7 @@ class Entity<Key extends EntityKey> extends DeepCollectionEquality {
     if (other.runtimeType != runtimeType) return false;
     if (other is! Entity) return false;
     if (other.idOrNull != idOrNull) return false;
-    if (other.createdAtOrNull != createdAtOrNull) return false;
+    if (other.timeMillsOrNull != timeMillsOrNull) return false;
     if (!iterableEquals(other.props, props)) return false;
     return true;
   }

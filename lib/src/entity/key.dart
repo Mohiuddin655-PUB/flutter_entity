@@ -4,15 +4,15 @@ class EntityKey {
   final String id;
 
   /// The timestamp key.
-  final String createdAt;
+  final String timeMills;
 
   /// Default constructor for [EntityKey].
   const EntityKey({
     this.id = "id",
-    this.createdAt = "createdAt",
+    this.timeMills = "time_mills",
   });
 
-  Iterable<String> get keys => [id, createdAt];
+  Iterable<String> get keys => [id, timeMills];
 
   /// Singleton instance of [EntityKey].
   ///

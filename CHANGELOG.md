@@ -1,4 +1,9 @@
+## 1.3.2
+
+- Remove EntityTimestamp from Entity
+
 ## 1.3.1
+
 ## 1.3.0
 
 - Apply EntityTimestamp in Entity

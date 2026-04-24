@@ -133,19 +133,33 @@ class Response<T extends Object> extends DeepCollectionEquality {
   // ============================================================================
 
   bool get isAvailable => status == Status.available;
+
   bool get isBackup => backups.isNotEmpty;
+
   bool get isCancel => status == Status.canceled;
+
   bool get isComplete => status == Status.completed;
+
   bool get isExistByMe => resultByMe.isNotEmpty;
+
   bool get isFailed => status == Status.failure;
+
   bool get isIgnored => ignores.isNotEmpty;
+
   bool get isInternetError => status == Status.networkError;
+
   bool get isLoaded => !isLoading;
+
   bool get isLoading => status == Status.loading;
+
   bool get isNullable => status == Status.notFound;
+
   bool get isPaused => status == Status.paused;
+
   bool get isStopped => status == Status.stopped;
+
   bool get isSuccessful => status.isSuccessful;
+
   bool get isTimeout => status == Status.timeOut;
 
   bool get isError {
@@ -162,19 +176,33 @@ class Response<T extends Object> extends DeepCollectionEquality {
   // ============================================================================
 
   int get count => _count ?? result.length;
+
   T? get data => _data ?? result.firstOrNull;
+
   List<T> get backups => _backups ?? [];
+
   List<T> get ignores => _ignores ?? [];
+
   List<T> get result => _result ?? [if (_data != null) _data!];
+
   List<T> get resultByMe => _resultByMe ?? [];
+
   List<String> get selections => _selections ?? [];
+
   Map<String, bool> get exists => _exists ?? {};
+
   int get page => _snapshot is int ? _snapshot as int : 0;
+
   double get progress => _progress ?? 0;
+
   Status get status => _status ?? Status.none;
+
   String get error => _error ?? status.error;
+
   String get message => _message ?? status.message;
+
   Object? get feedback => _feedback;
+
   Object? get snapshot => _snapshot;
 
   // ============================================================================

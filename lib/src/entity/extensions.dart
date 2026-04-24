@@ -28,15 +28,19 @@ extension EntityObjectHelper on Object? {
 
 extension StringHelper on String? {
   bool get isRef => this != null && this!.startsWith("@");
+
   bool get isCounterRef => this != null && this!.startsWith("#");
+
   bool get isUrl => this != null && this!.startsWith("https://");
 }
 
 extension StringsHelper on List<String>? {
   bool get isRefs =>
       this != null && this!.isNotEmpty && this!.every((e) => e.isRef);
+
   bool get isCounterRefs =>
       this != null && this!.isNotEmpty && this!.every((e) => e.isCounterRef);
+
   bool get isUrls {
     return this != null && this!.isNotEmpty && this!.every((e) => e.isUrl);
   }

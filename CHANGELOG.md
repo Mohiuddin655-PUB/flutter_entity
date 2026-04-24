@@ -1,3 +1,7 @@
+## 1.2.9
+
+- Add EntityTimestamp
+
 ## 1.2.8
 
 - Modifier checker improved

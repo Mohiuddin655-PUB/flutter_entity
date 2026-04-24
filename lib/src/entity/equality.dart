@@ -91,12 +91,16 @@ class EqualityBy<E, F> implements Equality<E> {
 /// compile-time constant, while still allowing the class to be used at runtime.
 class DefaultEquality<E> implements Equality<E> {
   const DefaultEquality();
+
   @override
   bool equals(Object? e1, Object? e2) => e1 == e2;
+
   @override
   bool notEquals(Object? e1, Object? e2) => !equals(e1, e2);
+
   @override
   int hash(Object? e) => e.hashCode;
+
   @override
   bool isValidKey(Object? o) => true;
 }
@@ -104,12 +108,16 @@ class DefaultEquality<E> implements Equality<E> {
 /// Equality of objects that compares only the identity of the objects.
 class IdentityEquality<E> implements Equality<E> {
   const IdentityEquality();
+
   @override
   bool equals(E e1, E e2) => identical(e1, e2);
+
   @override
   bool notEquals(E e1, E e2) => !equals(e1, e2);
+
   @override
   int hash(E e) => identityHashCode(e);
+
   @override
   bool isValidKey(Object? o) => true;
 }
@@ -123,6 +131,7 @@ class IdentityEquality<E> implements Equality<E> {
 /// The [hash] of `null` is `null.hashCode`.
 class IterableEquality<E> implements Equality<Iterable<E>> {
   final Equality<E?> _elementEquality;
+
   const IterableEquality(
       [Equality<E> elementEquality = const DefaultEquality<Never>()])
       : _elementEquality = elementEquality;
@@ -180,6 +189,7 @@ class IterableEquality<E> implements Equality<Iterable<E>> {
 /// The [hash] of `null` is `null.hashCode`.
 class ListEquality<E> implements Equality<List<E>> {
   final Equality<E> _elementEquality;
+
   const ListEquality(
       [Equality<E> elementEquality = const DefaultEquality<Never>()])
       : _elementEquality = elementEquality;
@@ -309,6 +319,7 @@ class _MapEntry {
   final MapEquality equality;
   final Object? key;
   final Object? value;
+
   _MapEntry(this.equality, this.key, this.value);
 
   @override
@@ -335,6 +346,7 @@ class _MapEntry {
 class MapEquality<K, V> implements Equality<Map<K, V>> {
   final Equality<K> _keyEquality;
   final Equality<V> _valueEquality;
+
   const MapEquality(
       {Equality<K> keys = const DefaultEquality<Never>(),
       Equality<V> values = const DefaultEquality<Never>()})
@@ -452,6 +464,7 @@ class MultiEquality<E> implements Equality<E> {
 class DeepCollectionEquality implements Equality {
   final Equality _base;
   final bool _unordered;
+
   const DeepCollectionEquality([Equality base = const DefaultEquality<Never>()])
       : _base = base,
         _unordered = false;

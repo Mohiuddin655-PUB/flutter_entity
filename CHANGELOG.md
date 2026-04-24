@@ -1,3 +1,7 @@
+## 1.3.0
+
+- Apply EntityTimestamp in Entity
+
 ## 1.2.9
 
 - Add EntityTimestamp

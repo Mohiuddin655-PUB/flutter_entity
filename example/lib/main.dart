@@ -98,13 +98,13 @@ class User extends Entity<EntityKey> {
 
   User({
     String? id,
-    int? timeMills,
+    EntityTimestamp? createdAt,
     this.name,
     this.age,
-  }) : super(id: id, timeMills: timeMills);
+  }) : super(id: id, createdAt: createdAt);
 
   @override
   String toString() {
-    return 'User{id: $id, name: $name, age: $age, timeMills: $timeMills}';
+    return 'User{id: $id, name: $name, age: $age, createdAt: $createdAtOrNull}';
   }
 }

@@ -1,3 +1,7 @@
+## 1.3.3
+
+- Improved Modifier
+
 ## 1.3.2
 
 - Remove EntityTimestamp from Entity
